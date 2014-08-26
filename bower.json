@@ -2,6 +2,5 @@
   "name": "gulp-bower-build",
   "version": "0.0.0",
   "private": true,
-  "dependencies": {
-  }
+  "dependencies": {}
 }

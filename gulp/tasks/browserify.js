@@ -5,8 +5,7 @@ var gulp = require('gulp'),
     bundleLogger = require('../util/bundleLogger'),
     source = require('vinyl-source-stream'),
     coffeeify = require('coffeeify'),
-    debowerify = require('debowerify'),
-    deamdify = require('deamdify');
+    browserifyShim = require('browserify-shim');
 
 gulp.task('browserify', function() {
   var src = './'+global.gulpConfig.src.js+'/app.js',
@@ -24,9 +23,8 @@ gulp.task('browserify', function() {
   var bundle = function() {
     bundleLogger.start();
     return bundler
+      .transform(browserifyShim)
       .transform(coffeeify)
-      .transform(debowerify)
-      .transform(deamdify)
       .bundle()
       .on('error',gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(source('app.js'))
