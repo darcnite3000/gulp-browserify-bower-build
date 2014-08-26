@@ -11,7 +11,7 @@ but more focused on getting the browserify stuff working with bower
 
 this uses ruby-sass(with compass so you need a ruby/bundler env)
 and allows for coffeescript requires(through coffeeify)
-it uses debowerify to allow for bower projects to be required and to allow for
+it uses broserify-shim to allow for bower projects to be required and to allow for
 the importing of bower css it uses gulp-cssjoin to inline css @imports
 
 ```sh
