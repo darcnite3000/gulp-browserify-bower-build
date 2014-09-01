@@ -23,8 +23,8 @@ gulp.task('browserify', function() {
   var bundle = function() {
     bundleLogger.start();
     return bundler
-      .transform(browserifyShim)
       .transform(coffeeify)
+      .transform(browserifyShim)
       .bundle()
       .on('error',gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(source('app.js'))
