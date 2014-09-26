@@ -1,39 +1,21 @@
-var gulp = require('gulp'),
-    gutil = require('gulp-util'),
-    browserify = require('browserify'),
-    watchify = require('watchify'),
-    bundleLogger = require('../util/bundleLogger'),
-    source = require('vinyl-source-stream'),
-    coffeeify = require('coffeeify'),
-    browserifyShim = require('browserify-shim');
+(function () {
+  'use strict';
 
-gulp.task('browserify', function() {
-  var src = './'+global.gulpConfig.src.js+'/app.js',
-      dest = './'+global.gulpConfig.dest.js+'/',
-      isWatching = global.gulpConfig.isWatching;
-  var bundler;
-  if(isWatching){
-    var opts = watchify.args
-    opts.debug = true;
-    bundler = watchify(browserify(src,opts));
-  }else{
-    bundler = browserify(src);
-  }
+  var gulp            = require('gulp'),
+      source          = require('vinyl-source-stream'),
+      browserify      = require('browserify'),
+      browserifyShim  = require('browserify-shim'),
+      coffeeify       = require('coffeeify');
 
-  var bundle = function() {
-    bundleLogger.start();
-    return bundler
-      .transform(coffeeify)
-      .transform(browserifyShim)
-      .bundle()
-      .on('error',gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(source('app.js'))
-      .pipe(gulp.dest(dest))
-      .on('end', bundleLogger.end)
-  };
-  if(isWatching){
-    bundler.on('update',bundle);
-  }
-
-  return bundle();
-});
+  module.exports = gulp.task('browserify', function() {
+    return browserify({
+      entries:    [config.paths.src.modules],
+      extensions: ['.coffee']
+    })
+    .transform(coffeeify)
+    .transform(browserifyShim)
+    .bundle()
+    .pipe(source(config.filenames.release.scripts))
+    .pipe(gulp.dest(config.paths.dest.release.scripts));
+  });
+})();
